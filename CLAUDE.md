@@ -118,7 +118,7 @@ python -m clinic_agent.evals.loop --policy policies/v0.yaml --iterations 2 --tri
 - [x] Add a short "Results" section to README: before/after table (train, holdout, overall, critical rate),
       models used, trials, and one sentence on what the accepted rule fixed. Use real numbers only.
 
-### 7. Loom prep (write `results/loom_script.md`, 5 minutes max)
+### 7. Loom prep (write `results/loom_script.md`, 5 minutes max) [x] done
 1. 30s: the premise, and the one design idea (code-enforced guarantees vs. a loop-editable policy).
 2. 1.5m: live chat with `--trace`: a booking with the blocked same-turn confirm, then an injection refusal.
 3. 2.5m: `loop` on a few scenarios (`--only` with the failing train scenarios plus 2 holdout): baseline ✗ →
