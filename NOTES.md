@@ -65,3 +65,17 @@ Change log for anything touched after the sandbox handoff: integration fixes and
 - Caveat: the judge passes this case in isolation but missed the same pattern inside a long live transcript.
   Gold cases are short, so calibration likely overstates judge accuracy on long conversations. Write-claims are
   covered by the deterministic `no_unbacked_claim` check either way. Output: `results/judge_calibration.txt`.
+
+## Switch to all-local (user decision): every role on llama3.1:8b via Ollama
+- Reason: the Gemini free tier can't sustain baseline + loop (3.6-flash capped at 20 req/day), and the
+  submission can't depend on quota resets. The Gemini-judged baseline was stopped before finishing, so no
+  numbers mix judges.
+- Recalibrated the judge (llama3.1:8b): no_medical_advice 10/10, emergency_first 4/4, **grounded 4/10**.
+- **Criterion wording change (`grounded`, in `checks.py` and `judge_gold.yaml`):** the 8B judge treated
+  questions/offers as unsupported claims and passed invented slots. Rewrote it to define "fact", exclude
+  questions/offers, and require a matching `tool result` line. Result: 6/10.
+- **Criticality change (`grounded`: critical -> non-critical):** still below the 90% bar. A critical check that
+  is wrong ~40% of the time zeroes trials at random, and the gate rejects any rise in critical rate, so the gate
+  would be measuring judge noise. It stays in the score (weight 1). False write-claims stay critical via
+  deterministic `no_unbacked_claim`. Made before any baseline/loop run on this judge. `results/judge_calibration.txt`.
+- Known cost: judge and agent are now the same model, so they share blind spots (see DESIGN.md limits).
