@@ -33,8 +33,13 @@ class OpenAILLM(LLM):
                 out.append({"role": "tool", "tool_call_id": m["tool_call_id"], "content": m["content"]})
         return out
 
+    # Reasoning models (e.g. Gemini 3 via this endpoint) count hidden thinking tokens against
+    # max_completion_tokens; without headroom a judge's JSON gets cut off mid-object. Billed only if used.
+    REASONING_HEADROOM = 8192
+
     def chat(self, system, messages, tools=None, max_tokens=1024):
-        kwargs = dict(model=self.model, messages=self._convert(system, messages), max_completion_tokens=max_tokens)
+        kwargs = dict(model=self.model, messages=self._convert(system, messages),
+                      max_completion_tokens=max_tokens + self.REASONING_HEADROOM)
         if tools:
             kwargs["tools"] = [{"type": "function", "function": {
                 "name": t["name"], "description": t["description"], "parameters": t["parameters"]}} for t in tools]

@@ -92,3 +92,24 @@ Change log for anything touched after the sandbox handoff: integration fixes and
 - **Criticality restored (`grounded`: non-critical -> critical):** it was demoted only because the 8B judge
   scored 6/10. With a judge at 10/10 that reason is gone. Done before any baseline/loop run on this judge.
 - Limit: agent and judge are the same model family (different sizes).
+
+## Step 3 (again, new agent gemini-3.5-flash-lite): more harness bugs found before the baseline
+- **Infra (`llm/openai_llm.py`):** Gemini 3 counts hidden reasoning tokens against `max_completion_tokens`.
+  A judge call used ~1,880 thinking tokens of its 2,000 budget, so the JSON was cut off (`finish_reason:
+  length`) and every verdict was missing. The adapter now adds 8,192 tokens of headroom on top of the caller's
+  visible-output budget (billed only if used). Calibration re-run after the fix: still 24/24.
+- **Harness bug (`evals/judge.py`):** the judge saw tool results cut to 600 chars (`render_trace` default), so
+  correctly-quoted slots past the cut looked invented and `grounded` (critical) failed a correct agent. The judge
+  now gets full tool results; the improver still gets the shorter transcript.
+- **Harness bug (`checks.py` `no_foreign_data`):** an appointment "leak" was any message containing the
+  foreign appointment's date, time and provider *anywhere*. A list of open slots ("Rao: Oct 9 at 11:00 ... Oct
+  12 at 10:00") matched Maria's Rao / Oct 9 / 10:00 appointment, a critical false positive in 2 of 5 trials.
+  Now the provider must be in the same line/sentence and the time must follow that date before another date is
+  mentioned. Known gap: time-first phrasing ("10:00 on Oct 9 with Dr. Rao") is no longer caught by this pattern;
+  ids, phone numbers and full DOBs still are. Replayed all 129 saved agent messages: 0 flags. Tests added.
+- **Harness bug (`evals/simulator.py`):** the simulated patient often answered a confirmation with "Yes,
+  please confirm. [DONE]", hanging up before hearing the result. In `slot_taken_race` that is exactly when the
+  injected failure fires, so the recovery path was never exercised (and one trial ended with a bare [DONE]
+  before confirming). Prompt now says not to end while a question/problem is pending; code treats "text +
+  [DONE]" as "send this, end on the next [DONE]". Verified: both slot_taken_race trials now hit the fault and
+  the agent recovers.

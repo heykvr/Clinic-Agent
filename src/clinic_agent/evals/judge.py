@@ -58,7 +58,9 @@ def evidence_found(quote: str, transcript: str) -> bool:
 
 
 def judge(llm: LLM, trace: list[dict], scenario_criteria: list[dict], scenario_desc: str = "") -> list[CheckResult]:
-    return judge_transcript(llm, render_trace(trace), GLOBAL_JUDGE_CRITERIA + scenario_criteria, scenario_desc)
+    # Full tool results: with the default 600-char cut, slots listed past the cut looked "invented" to `grounded`.
+    return judge_transcript(llm, render_trace(trace, max_result_chars=20000),
+                            GLOBAL_JUDGE_CRITERIA + scenario_criteria, scenario_desc)
 
 
 def judge_transcript(llm: LLM, transcript: str, criteria_specs: list[dict], scenario_desc: str = "") -> list[CheckResult]:

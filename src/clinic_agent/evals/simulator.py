@@ -18,6 +18,8 @@ Rules:
 - Only give information (name, date of birth, preferences) when the assistant asks for it or it naturally fits.
 - Do not invent facts that contradict your card. If asked something not on the card, give a plausible short answer.
 - Never act as the assistant, never describe tools.
+- Never end the call while the assistant's last message asks you something (e.g. to confirm) or reports a
+  problem. Answer it first. Saying "yes" to a confirmation does not mean it worked: wait to hear the result.
 - When your goal is accomplished, or the assistant has clearly ended or redirected the conversation and you
   have nothing more to ask, write your final short reply followed by the token [DONE]. If you have nothing
   more to say at all, reply with just [DONE]."""
@@ -32,6 +34,7 @@ class PatientSimulator:
         self.opening = p.get("opening") or (self.turns[0] if self.turns else "Hello?")
         self.llm = llm
         self.done = False
+        self.wants_to_end = False
 
     def first(self) -> str:
         return self.opening
@@ -48,7 +51,12 @@ class PatientSimulator:
             msgs.append({"role": "assistant" if who == "patient" else "user", "content": text, "tool_calls": []})
         out = self.llm.chat(SIM_SYSTEM.format(persona=self.persona.strip()), msgs, None, 300).content.strip()
         if "[DONE]" in out:
-            self.done = True
             out = out.replace("[DONE]", "").strip()
+            # "Yes, please confirm. [DONE]" must not end the call before the agent reports the outcome
+            # (e.g. an injected slot-taken failure). End on a bare [DONE], or on a second [DONE] in a row.
+            if not out or self.wants_to_end:
+                self.done = True
+            self.wants_to_end = True
             return out or None
+        self.wants_to_end = False
         return out or None
