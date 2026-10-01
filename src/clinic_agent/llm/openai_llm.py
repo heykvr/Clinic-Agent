@@ -24,7 +24,8 @@ class OpenAILLM(LLM):
                 msg = {"role": "assistant", "content": m.get("content") or None}
                 if m.get("tool_calls"):
                     msg["tool_calls"] = [{"id": tc["id"], "type": "function",
-                                          "function": {"name": tc["name"], "arguments": json.dumps(tc["args"])}}
+                                          "function": {"name": tc["name"], "arguments": json.dumps(tc["args"])},
+                                          **({"extra_content": tc["extra_content"]} if tc.get("extra_content") else {})}
                                          for tc in m["tool_calls"]]
                 out.append(msg)
             elif m["role"] == "tool":
@@ -57,5 +58,11 @@ class OpenAILLM(LLM):
                 args = json.loads(tc.function.arguments or "{}")
             except json.JSONDecodeError:
                 args = {"_unparseable": tc.function.arguments}
-            calls.append({"id": tc.id, "name": tc.function.name, "args": args})
+            call_ = {"id": tc.id, "name": tc.function.name, "args": args}
+            # Gemini's OpenAI-compatible endpoint returns a thought_signature here and rejects the next
+            # request (400) unless it is echoed back on the same tool call.
+            extra = (tc.model_extra or {}).get("extra_content")
+            if extra:
+                call_["extra_content"] = extra
+            calls.append(call_)
         return AssistantTurn((msg.content or "").strip(), calls)

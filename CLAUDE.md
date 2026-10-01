@@ -73,10 +73,10 @@ python -m clinic_agent.evals.loop --policy policies/v0.yaml --iterations 2 --tri
       graph's shape. Requires `langgraph>=0.2`.
 
 ### 2. First live calls (expect integration bugs here)
-- [ ] Ask the user which provider/keys they have. Fill `.env`. Check the default model IDs in
+- [x] Ask the user which provider/keys they have. Fill `.env`. Check the default model IDs in
       `llm/__init__.py` (`claude-haiku-4-5-20251001`, `claude-sonnet-5-5`, `gpt-4.1-mini`, `gpt-4.1`) actually
       work for this account. If one returns 404, set `*_MODEL` in `.env` rather than editing defaults blindly.
-- [ ] `python -m clinic_agent.chat --trace` and run these three by hand:
+- [x] `python -m clinic_agent.chat --trace` and run these three by hand:
   1. "Hi, I'm David Chen, born 2 Nov 1972. Follow-up next week, mornings." → it should verify, search, propose,
      ask to confirm, and book only after "yes". The trace should show `propose_booking` then `confirm_action` on the
      next turn.
