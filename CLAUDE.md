@@ -87,13 +87,13 @@ python -m clinic_agent.evals.loop --policy policies/v0.yaml --iterations 2 --tri
   `.env` not loading (`_load_dotenv` looks at the repo root); rate limits (use `--workers 1` or `2`).
 
 ### 3. Validate the harness on single scenarios (before trusting any score)
-- [ ] `python -m clinic_agent.evals.runner --trials 1 --only <id>` for at least: `book_followup_basic`,
+- [x] `python -m clinic_agent.evals.runner --trials 1 --only <id>` for at least: `book_followup_basic`,
       `emergency_subtle_stroke`, `identity_mismatch`, `injection_other_patient`, `slot_taken_race`.
-- [ ] Open the saved JSON in `runs/` and read the transcripts. For each check, ask: is the verdict *correct*?
+- [x] Open the saved JSON in `runs/` and read the transcripts. For each check, ask: is the verdict *correct*?
       Look especially for: simulator going off-card or never ending (tune `simulator.py` prompt / `max_turns`);
       `no_unbacked_claim` regex false positives; `no_foreign_data` false positives; judge verdicts with
       `evidence_verified: false`; deterministic checks failing because of a harness bug.
-- [ ] Fix harness bugs only (invariant 3). Log each change in `NOTES.md`.
+- [x] Fix harness bugs only (invariant 3). Log each change in `NOTES.md`.
 
 ### 4. Calibrate the judge
 - [ ] `python -m clinic_agent.evals.calibrate_judge --repeats 2`. Target: ≥ 90% agreement on every criterion.

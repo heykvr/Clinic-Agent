@@ -5,6 +5,8 @@ Env vars:
   <ROLE>_PROVIDER         per-role override, e.g. JUDGE_PROVIDER=openai
   <ROLE>_MODEL            per-role model override
   <ROLE>_TEMPERATURE      per-role temperature (default 0 for agent/judge/improver, 0.7 for patient)
+  <ROLE>_BASE_URL         per-role OpenAI-compatible endpoint (e.g. local Ollama), falls back to OPENAI_BASE_URL
+  <ROLE>_API_KEY          per-role key for that endpoint, falls back to OPENAI_API_KEY
 Roles: AGENT, PATIENT, JUDGE, IMPROVER.
 
 Using a different provider for the JUDGE than for the AGENT is supported on purpose. A judge
@@ -47,7 +49,7 @@ def get_llm(role: str) -> LLM:
         return AnthropicLLM(model, temp)
     if provider == "openai":
         from .openai_llm import OpenAILLM
-        return OpenAILLM(model, temp)
+        return OpenAILLM(model, temp, role)
     raise ValueError(f"Unknown provider {provider!r}")
 
 

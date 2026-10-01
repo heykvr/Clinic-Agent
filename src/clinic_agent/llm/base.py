@@ -72,7 +72,7 @@ def extract_json(text: str):
     return None
 
 
-def with_retries(fn, attempts: int = 4, base_delay: float = 2.0):
+def with_retries(fn, attempts: int = 6, base_delay: float = 2.0, max_delay: float = 65.0):
     for i in range(attempts):
         try:
             return fn()
@@ -82,4 +82,7 @@ def with_retries(fn, attempts: int = 4, base_delay: float = 2.0):
                                                  "Timeout", "ServiceUnavailable"))
             if not transient or i == attempts - 1:
                 raise
-            time.sleep(base_delay * (2 ** i))
+            # Per-minute quotas (e.g. Gemini free tier) say how long to wait; honour that instead of guessing.
+            hint = re.search(r"retry in ([\d.]+)s", str(e))
+            delay = float(hint.group(1)) + 1 if hint else base_delay * (2 ** i)
+            time.sleep(min(delay, max_delay))

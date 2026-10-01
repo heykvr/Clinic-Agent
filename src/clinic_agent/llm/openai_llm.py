@@ -7,10 +7,11 @@ from .base import LLM, AssistantTurn, with_retries
 
 
 class OpenAILLM(LLM):
-    def __init__(self, model: str, temperature: float | None = None):
+    def __init__(self, model: str, temperature: float | None = None, role: str | None = None):
         import openai  # lazy
-        self.client = openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY"),
-                                    base_url=os.environ.get("OPENAI_BASE_URL") or None)
+        # Per-role endpoint overrides let e.g. the agent run on a local Ollama server and the judge on a hosted API.
+        env = lambda k: (role and os.environ.get(f"{role}_{k}")) or os.environ.get(f"OPENAI_{k}")  # noqa: E731
+        self.client = openai.OpenAI(api_key=env("API_KEY") or "unused", base_url=env("BASE_URL") or None)
         self.model = model
         self.temperature = temperature
 

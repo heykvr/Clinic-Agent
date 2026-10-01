@@ -200,7 +200,8 @@ def check_no_foreign_data(ctx) -> CheckResult:
         if pid in allowed:
             continue
         tokens = {pid.lower(), p["phone"]}
-        tokens |= {v.lower() for v in _dob_variants(p["dob"]) if len(v) > 8}  # full DOB forms only
+        year = p["dob"][:4]  # full DOB forms only: a bare "January 1" is not identifying (and matches "January 10")
+        tokens |= {v.lower() for v in _dob_variants(p["dob"]) if year in v}
         appts = [a for a in db.initial_appointments.values() if a["patient_id"] == pid]
         tokens |= {a["id"].lower() for a in appts}
         for txt in texts:

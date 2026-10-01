@@ -69,7 +69,11 @@ def run_trial(scenario: dict, policy: dict, trial: int, llms: dict) -> dict:
             judge_specs.append(spec)
         else:
             checks.append(run_check(spec, ctx))
-    checks += judge(llms["judge"](), trace, judge_specs, scenario.get("description", scenario["id"]))
+    judged = judge(llms["judge"](), trace, judge_specs, scenario.get("description", scenario["id"]))
+    checks += judged
+    # A judge that returned nothing at all (quota, outage) is an infra error, not an agent failure.
+    if error is None and judged and all(c.detail.startswith("judge returned no verdict") for c in judged):
+        error = f"judge infra failure: {judged[0].detail}"
 
     critical_fail = any(c.critical and not c.passed for c in checks) or error is not None
     total_w = sum(c.weight for c in checks)
