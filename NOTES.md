@@ -158,3 +158,9 @@ Both iterations REJECTED by the gate. Read every critical failure behind the rej
 - Same failure as run 1 iter 1: an "also call escalate_to_human" rule WITHOUT a standalone grounding rule
   made the agent tell the stroke patient that help is on the way. Accepted v1 paired the escalation rule with
   `factual-claims` and passed stroke 3/3. Small n (3 candidates), so suggestive, not proven.
+
+## Step 8: write-ups
+- DESIGN.md rewritten to fit one page (rendered 1 page at 11pt A4, 628 words). The handed-over version already
+  rendered to 2 pages even at 10pt, so the invariant was broken before any edit. "Known limits" now lists what the
+  runs actually showed (noise, escalation over-claiming, judge blind spot, harness bugs). "AI usage" is drafted;
+  the "where my judgement overrode it" part is left for the user.

@@ -127,7 +127,7 @@ python -m clinic_agent.evals.loop --policy policies/v0.yaml --iterations 2 --tri
 Pre-run the full loop beforehand so the recording uses a small, fast subset.
 
 ### 8. Write-ups
-- [ ] Update DESIGN.md "Known limits" with anything real you learned in steps 3–6 (still ≤ 1 page).
+- [x] Update DESIGN.md "Known limits" with anything real you learned in steps 3–6 (still ≤ 1 page).
 - [ ] DESIGN.md "AI usage": draft bullets from `NOTES.md` and git history, but **leave the "where my judgement
       overrode it" part for the user to confirm or write**. Ask them; don't invent their opinions.
 - [ ] README: confirm the two headline commands work exactly as written, from a fresh venv.
