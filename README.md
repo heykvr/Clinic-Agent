@@ -13,9 +13,21 @@ cp .env.example .env        # add ANTHROPIC_API_KEY and/or OPENAI_API_KEY; set L
 ```
 
 Each role (agent, simulated patient, judge, improver) can use a different provider and model. See `.env.example`. Defaults: a small agent model (so failures are visible), with a stronger judge and improver.
-Gemini API keys also work through Google's OpenAI-compatible endpoint: set `LLM_PROVIDER=openai`, put the Gemini key in `OPENAI_API_KEY`, set `OPENAI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/`, and choose an accessible Gemini model with `AGENT_MODEL` (and optionally the other role-specific `*_MODEL` settings).
 
-Each role (agent, simulated patient, judge, improver) can use a different provider and model. See `.env.example`. Defaults: a small agent model (so failures are visible), with a stronger judge and improver.
+Any OpenAI-compatible endpoint works through `LLM_PROVIDER=openai`, and each role can point at its own endpoint with `<ROLE>_BASE_URL` / `<ROLE>_API_KEY`:
+
+- **Fully local (no keys, what the results below used):** install [Ollama](https://ollama.com), `ollama pull llama3.1`, then in `.env`:
+  ```
+  LLM_PROVIDER=openai
+  OPENAI_BASE_URL=http://localhost:11434/v1
+  OPENAI_API_KEY=ollama
+  AGENT_MODEL=llama3.1:latest
+  PATIENT_MODEL=llama3.1:latest
+  JUDGE_MODEL=llama3.1:latest
+  IMPROVER_MODEL=llama3.1:latest
+  ```
+  Use `--workers 1`–`3`; Ollama serialises requests.
+- **Gemini:** put the key in `OPENAI_API_KEY` and set `OPENAI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/`. Free-tier keys are too rate-limited for the full loop.
 
 ## Run
 
