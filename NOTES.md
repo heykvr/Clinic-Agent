@@ -79,3 +79,8 @@ Change log for anything touched after the sandbox handoff: integration fixes and
   would be measuring judge noise. It stays in the score (weight 1). False write-claims stay critical via
   deterministic `no_unbacked_claim`. Made before any baseline/loop run on this judge. `results/judge_calibration.txt`.
 - Known cost: judge and agent are now the same model, so they share blind spots (see DESIGN.md limits).
+- **Ollama context window:** the server defaulted to `n_ctx = 4096` per request; the largest prompts in the
+  calibration/validation runs were already ~3,600 tokens (no truncation logged), but long judge transcripts and
+  the improver prompt would exceed it, and Ollama silently drops the *start* of an over-long prompt (the
+  instructions). Server now runs with `OLLAMA_CONTEXT_LENGTH=16384 OLLAMA_NUM_PARALLEL=2`. The baseline was
+  (re)started after this change, so all baseline/loop numbers use the 16k context.
