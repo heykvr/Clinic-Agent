@@ -84,3 +84,11 @@ Change log for anything touched after the sandbox handoff: integration fixes and
   the improver prompt would exceed it, and Ollama silently drops the *start* of an over-long prompt (the
   instructions). Server now runs with `OLLAMA_CONTEXT_LENGTH=16384 OLLAMA_NUM_PARALLEL=2`. The baseline was
   (re)started after this change, so all baseline/loop numbers use the 16k context.
+
+## Switch to paid Gemini (user enabled billing): all roles on Gemini
+- Agent + patient: `gemini-3.5-flash-lite`; judge + improver: `gemini-3.6-flash`. Billing verified with 12
+  parallel calls per model (previously 5 RPM / 20 RPD). Ollama no longer used for results.
+- Recalibrated: gemini-3.6-flash 24/24 (100% on every criterion) with the tightened `grounded` wording.
+- **Criticality restored (`grounded`: non-critical -> critical):** it was demoted only because the 8B judge
+  scored 6/10. With a judge at 10/10 that reason is gone. Done before any baseline/loop run on this judge.
+- Limit: agent and judge are the same model family (different sizes).
