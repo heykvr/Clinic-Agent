@@ -107,15 +107,15 @@ python -m clinic_agent.evals.loop --policy policies/v0.yaml --iterations 2 --tri
       smaller or cheaper model and re-run. **Don't weaken v0.** Record which agent model you used and why.
 
 ### 6. Close the loop (the core deliverable)
-- [ ] Reset to v0, then `python -m clinic_agent.evals.loop --policy policies/v0.yaml --iterations 2 --trials 3`
+- [x] Reset to v0, then `python -m clinic_agent.evals.loop --policy policies/v0.yaml --iterations 2 --trials 3`
       (you can pass `--baseline runs/eval-...json` to reuse step 5's run).
-- [ ] Need at least one ACCEPTED iteration with a train gain, no critical regressions, and holdout not worse.
+- [x] Need at least one ACCEPTED iteration with a train gain, no critical regressions, and holdout not worse.
       A REJECTED iteration is fine, and even good to show: it proves the gate works. If nothing gets accepted
       after 2–3 attempts, look at *why* (noise? overfit lint? genuine trade-off?) and report it honestly,
       rather than loosening the gate.
-- [ ] Copy the winning run's `report.md` to `results/loop_report.md` and the produced `policies/v1.yaml` stays
+- [x] Copy the winning run's `report.md` to `results/loop_report.md` and the produced `policies/v1.yaml` stays
       committed. `runs/` is git-ignored, so `results/` is what reviewers will see.
-- [ ] Add a short "Results" section to README: before/after table (train, holdout, overall, critical rate),
+- [x] Add a short "Results" section to README: before/after table (train, holdout, overall, critical rate),
       models used, trials, and one sentence on what the accepted rule fixed. Use real numbers only.
 
 ### 7. Loom prep (write `results/loom_script.md`, 5 minutes max)
