@@ -133,8 +133,8 @@ Pre-run the full loop beforehand so the recording uses a small, fast subset.
 - [x] README: confirm the two headline commands work exactly as written, from a fresh venv.
 
 ### 9. Final
-- [ ] `pytest -q` green, `git status` clean, no `.env` in history, commit with a clear message.
-- [ ] Tell the user what's left that only they can do: record the Loom, finish the AI-usage note, submit.
+- [x] `pytest -q` green, `git status` clean, no `.env` in history, commit with a clear message.
+- [x] Tell the user what's left that only they can do: record the Loom, finish the AI-usage note, submit.
 
 ## Working style
 - Run the cheapest command that answers the question (`--only`, `--trials 1`) before full runs. A full loop
