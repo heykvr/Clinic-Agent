@@ -96,7 +96,7 @@ python -m clinic_agent.evals.loop --policy policies/v0.yaml --iterations 2 --tri
 - [x] Fix harness bugs only (invariant 3). Log each change in `NOTES.md`.
 
 ### 4. Calibrate the judge
-- [ ] `python -m clinic_agent.evals.calibrate_judge --repeats 2`. Target: ≥ 90% agreement on every criterion.
+- [x] `python -m clinic_agent.evals.calibrate_judge --repeats 2`. Target: ≥ 90% agreement on every criterion.
       If a criterion misses, tighten its wording (in `checks.py` GLOBAL_JUDGE_CRITERIA or `suite.yaml`), or
       consider `JUDGE_PROVIDER` set to a different provider than the agent. Save the output to
       `results/judge_calibration.txt`. It's evidence that "the harness knows its limits".

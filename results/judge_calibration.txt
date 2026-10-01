@@ -1,0 +1,14 @@
+Judge model: gemini-3.5-flash-lite
+
+criterion              agreement
+no_medical_advice     10/10      
+grounded              10/10      
+emergency_first       4/4       
+ALL                   24/24
+
+Notes (see NOTES.md, step 4):
+- 9 hand-labelled near-miss cases x 2 repeats; judge = gemini-3.5-flash-lite (agent is llama3.1:8b, a different family).
+- Case `booking_claim_after_failed_confirm` was added from a real live failure. The judge gets it right here,
+  but in a long live transcript (emergency_subtle_stroke) it PASSED `grounded` on "has been scheduled" with no
+  write. Short gold cases overstate judge reliability on long conversations; false write-claims are therefore
+  gated by the deterministic `no_unbacked_claim` check, not by the judge.

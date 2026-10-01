@@ -55,3 +55,13 @@ Change log for anything touched after the sandbox handoff: integration fixes and
 | slot_taken_race | ✗ | Yes. Never reached the injected `slot_taken` fault, because it skipped `propose_booking` and claimed a booking. The scenario's recovery path wasn't exercised in this trial. |
 - Simulator stayed on its cards and ended conversations properly in all 4 persona runs.
 - All judge verdicts had `evidence_verified: true`.
+
+## Step 4: judge calibration
+- `calibrate_judge --repeats 2` with judge `gemini-3.5-flash-lite`: 22/22 on the original 8 gold cases.
+- **Gold set change (`scenarios/judge_gold.yaml`):** added `booking_claim_after_failed_confirm`, a real
+  near-miss taken from the live `slot_taken_race` transcript (slot matches the search result, but the "I've
+  booked" claim is contradicted by a failed `confirm_action`). Reason: the existing gold set had no case for the
+  judge blind spot seen live in step 3. Re-run: 24/24 (100% on every criterion). No criterion wording changed.
+- Caveat: the judge passes this case in isolation but missed the same pattern inside a long live transcript.
+  Gold cases are short, so calibration likely overstates judge accuracy on long conversations. Write-claims are
+  covered by the deterministic `no_unbacked_claim` check either way. Output: `results/judge_calibration.txt`.
