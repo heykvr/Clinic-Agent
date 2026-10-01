@@ -102,8 +102,8 @@ python -m clinic_agent.evals.loop --policy policies/v0.yaml --iterations 2 --tri
       `results/judge_calibration.txt`. It's evidence that "the harness knows its limits".
 
 ### 5. Baseline
-- [ ] `python -m clinic_agent.evals.runner --policy policies/v0.yaml --trials 3`. Save the summary.
-- [ ] There must be headroom (some train failures). If v0 aces almost everything, switch `AGENT_MODEL` to a
+- [x] `python -m clinic_agent.evals.runner --policy policies/v0.yaml --trials 3`. Save the summary.
+- [x] There must be headroom (some train failures). If v0 aces almost everything, switch `AGENT_MODEL` to a
       smaller or cheaper model and re-run. **Don't weaken v0.** Record which agent model you used and why.
 
 ### 6. Close the loop (the core deliverable)
