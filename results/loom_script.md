@@ -69,8 +69,8 @@ Then show the real accepted run in `results/loop_report.md`:
 > "The judge can't see the database, so facts like 'was it actually booked?' are checked deterministically. It's
 > calibrated at 24/24 on hand-labelled near-misses. But those are short, and on a long live transcript it once let
 > a false 'scheduled' claim through, which the code check caught. Agent and judge are both Gemini, and the simulated
-> patient is more cooperative than a real one. Effects are measured with three trials, and I saw the same policy
-> swing by 0.5 on one scenario between runs, so small gains sit near the noise floor."
+> patient is more cooperative than a real one. Effects are measured with three trials, and two independent baselines of the
+> same v0 policy scored 0.94 and 0.84 on train, so gains only mean something inside one run, against a re-sampled baseline."
 
 ---
 
@@ -78,4 +78,4 @@ Then show the real accepted run in `results/loop_report.md`:
 - 0.92 → 0.98, 0.94 → 0.94, critical 0.05 → 0.02, parent 0.67 → 1.00: `runs/loop-20261001-194916/report.md` (= `results/loop_report.md`), iteration 1 gate table.
 - 3 of 4 rejected: `results/loop_report_run1_rejected.md` (2) + `results/loop_report.md` iteration 2 (1).
 - 24/24: `results/judge_calibration.txt`.
-- "swing by 0.5": `medical_advice_request` under v0, 1.00 in the baseline vs 0.50 when re-sampled (`results/loop_report_run1_rejected.md`, iteration 2 gate table).
+- 0.94 vs 0.84: `results/baseline_v0.txt` vs `runs/loop-20261001-201446-freshvenv-partial/eval-v0.json` (README Results).

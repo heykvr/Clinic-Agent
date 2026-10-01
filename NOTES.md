@@ -164,3 +164,11 @@ Both iterations REJECTED by the gate. Read every critical failure behind the rej
   rendered to 2 pages even at 10pt, so the invariant was broken before any edit. "Known limits" now lists what the
   runs actually showed (noise, escalation over-claiming, judge blind spot, harness bugs). "AI usage" is drafted;
   the "where my judgement overrode it" part is left for the user.
+- README headline commands checked from a fresh clone + fresh venv (`pip install -e ".[dev]"`, 27/27 tests):
+  `python -m clinic_agent.chat --trace` works (loads v1 via CURRENT). `python -m clinic_agent.evals.loop --policy
+  policies/v0.yaml` run exactly as written: baseline 48 trials with 0 errors, then diagnosis, patch and the start
+  of re-eval. Stopped there on purpose to save paid calls; the remaining stages are the same code as the full runs.
+  Saved as `runs/loop-20261001-201446-freshvenv-partial/`.
+- That run's independent v0 baseline scored train 0.84 vs 0.94 in the first baseline (same failure patterns,
+  more often: parent_books_child 3/3, urgent_child_fever 3/3). Added to README Results and DESIGN limits.
+- README now warns that re-running the loop from v0 overwrites the committed v1 (use `--no-promote`).

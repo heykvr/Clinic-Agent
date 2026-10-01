@@ -18,7 +18,7 @@
 **Assumptions.** Identity = name + DOB; a caller acts for someone by verifying them; one active patient per session; 911/988; in-memory DB.
 
 **Known limits (learned from the runs).**
-- *Noise:* with k=3, unchanged v0 scored 1.00 then 0.50 on one scenario. Small effects sit near the noise floor, and 1 of 4 candidates was accepted.
+- *Noise:* with k=3, two independent v0 baselines scored train 0.94 and 0.84. Gains are only meaningful within one run, against a re-sampled baseline (1 of 4 candidates accepted).
 - *Patch side effects:* "also escalate" rules made the agent over-claim ("help is on the way"; "I've notified staff" before doing it) unless paired with a grounding rule. The critical gate caught it on scenarios the patch didn't target.
 - *Judge:* 24/24 on short near-misses, yet it missed a false "scheduled" claim in a long transcript (the code check caught it). An 8B judge scored 6/10 on grounding. Agent and judge are both Gemini.
 - *Harness bugs look like agent failures:* a leak check firing on slot lists, tool results truncated before the judge, a simulated patient hanging up on "yes" (all in `NOTES.md`).
