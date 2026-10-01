@@ -1,0 +1,7 @@
+.env
+__pycache__/
+*.egg-info/
+.venv/
+runs/*
+!runs/.gitkeep
+.pytest_cache/
