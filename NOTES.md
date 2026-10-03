@@ -172,3 +172,6 @@ Both iterations REJECTED by the gate. Read every critical failure behind the rej
 - That run's independent v0 baseline scored train 0.84 vs 0.94 in the first baseline (same failure patterns,
   more often: parent_books_child 3/3, urgent_child_fever 3/3). Added to README Results and DESIGN limits.
 - README now warns that re-running the loop from v0 overwrites the committed v1 (use `--no-promote`).
+- DESIGN.md "AI usage": the "where my judgement overrode it" sentence was written from points the user chose
+  as true for them (not depending on free-tier quotas; keeping runs minimal and stopping them; learning the
+  system before submitting). Scenario list shortened to keep the page within one page.
